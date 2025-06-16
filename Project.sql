@@ -1,6 +1,6 @@
 /*  Schema Sql  */
 
-CREATE TABLE Departments (
+--CREATE TABLE Departments (
     DepartmentID SERIAL PRIMARY KEY,
     DepartmentName VARCHAR(100) NOT NULL
 );
