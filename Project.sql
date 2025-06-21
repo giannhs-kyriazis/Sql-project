@@ -1,48 +1,42 @@
-/*  Schema Sql  */
-
-CREATE TABLE Departments (
-    DepartmentID SERIAL PRIMARY KEY,
-    DepartmentName VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Employees (
-    EmployeeID SERIAL PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    DepartmentID INT REFERENCES Departments(DepartmentID),
-    HireDate DATE
-);
-
+-- Schemes--
 CREATE TABLE Projects (
-    ProjectID SERIAL PRIMARY KEY,
+    ProjectID INT IDENTITY(1,1) PRIMARY KEY,
     ProjectName VARCHAR(100),
     StartDate DATE,
     EndDate DATE
 );
 
+CREATE TABLE Employees (
+    EmployeeID INT IDENTITY(1,1) PRIMARY KEY,
+    FullName VARCHAR(100),
+    Department VARCHAR(50),
+    ProjectID INT FOREIGN KEY REFERENCES Projects(ProjectID)
+);
+
+-- Queries--
+
+INSERT INTO Projects (ProjectName, StartDate, EndDate)
+VALUES ('Project Alpha', '2023-01-01', '2023-06-30'),
+       ('Project Beta', '2023-02-15', '2023-08-15');
+
+INSERT INTO Employees (FullName, Department, ProjectID)
+VALUES ('Γιάννης Κυριαζής', 'Sales', 1),
+       ('Μαρία Γεροκο', 'IT', 1),
+       ('Κώστας Παπαδόπουλος', 'Finance', 2);
 
 
-/*  Queries  */
-
-
-INSERT INTO Departments (DepartmentName) VALUES ('Sales'), ('IT'), ('Finance');
-SELECT * FROM Departments;
-
-INSERT INTO Employees (FirstName, LastName, DepartmentID, HireDate)
-VALUES ('Γιάννης', 'Κυριαζής', 1, '2022-01-15'),
-       ('Μαρία', 'Γεροκο', 2, '2021-07-10');
-
-SELECT e.FirstName, e.LastName, d.DepartmentName
+SELECT e.FullName, e.Department, p.ProjectName
 FROM Employees e
-JOIN Departments d ON e.DepartmentID = d.DepartmentID;
+LEFT JOIN Projects p ON e.ProjectID = p.ProjectID;
 
-SELECT d.DepartmentName, COUNT(e.EmployeeID) AS NumEmployees
-FROM Departments d
-LEFT JOIN Employees e ON d.DepartmentID = e.DepartmentID
-GROUP BY d.DepartmentName;
 
-UPDATE Employees SET DepartmentID = 3 WHERE EmployeeID = 1;
+UPDATE Employees
+SET Department = 'IT'
+WHERE EmployeeID = 3;
 
-DELETE FROM Employees WHERE EmployeeID = 2;
+
+DELETE FROM Employees
+WHERE EmployeeID = 1;
+
 
 SELECT * FROM Employees;
