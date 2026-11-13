@@ -1,4 +1,4 @@
--- Schemes--
+-- Tables --
 CREATE TABLE Projects (
     ProjectID INT IDENTITY(1,1) PRIMARY KEY,
     ProjectName VARCHAR(100),
